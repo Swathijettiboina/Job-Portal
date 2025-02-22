@@ -105,7 +105,6 @@ git push origin main
 ✅ **Always pull the latest changes before working**  
 ✅ **Commit frequently with clear messages**  
 ✅ **Work within your assigned feature branch**  
-✅ **Ensure proper testing before merging to `dev`**  
 ✅ **Merge into `main` only after team approval**  
 
 Let’s collaborate effectively and make this project a success! 🚀🔥
