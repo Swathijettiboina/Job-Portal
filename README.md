@@ -49,7 +49,7 @@ npm install
 ### 🔹 Step 3: Run the Project
 - **Backend**  
 ```bash
-npm run dev
+npm start
 ```
 - **Frontend**  
 ```bash
