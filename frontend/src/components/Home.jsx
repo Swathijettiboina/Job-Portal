@@ -1,14 +1,31 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "./Navbar";
+import { Link } from "react-router-dom";
+import About from "../pages/About";
 
 const Home = () => {
+   const fullText = "Connecting Talent with Success!"; 
+    const typingSpeed = 100;
+  
+    const [text, setText] = useState(""); 
+    const [index, setIndex] = useState(0); 
+  
+    useEffect(() => {
+      if (index < fullText.length) {
+        const timeout = setTimeout(() => {
+          setText(fullText.slice(0, index + 1));
+          setIndex(index + 1);
+        }, typingSpeed);
+        return () => clearTimeout(timeout); 
+      }
+    }, [index, fullText]);
+  
   return (
     <>
       <Navbar />
-      
       {/* Main Container */}
       <div className="flex flex-col md:flex-row items-center justify-center h-screen bg-gray-100 px-6">
-        
+    
         {/* Left Side - Image */}
         <div className="w-full md:w-1/2 flex justify-center">
           <img 
@@ -21,17 +38,19 @@ const Home = () => {
         {/* Right Side - Content */}
         <div className="w-full md:w-1/2 text-center md:text-left">
           <h1 className="text-4xl font-bold text-gray-800">
-            Find Your Dream Job Now!
+            {text}
           </h1>
           <p className="text-gray-600 mt-4 text-lg">
             Explore thousands of job opportunities and kickstart your career today.
           </p>
-          <button className="mt-6 text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-xl px-5 py-2.5 text-center me-2 mb-2">
-            Get Started
-          </button>
+          <Link to="/jobs">
+            <button className="mt-6 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700">
+              Get Started
+            </button>
+          </Link>
         </div>
-
       </div>
+      <div><About/></div>
     </>
   );
 };
