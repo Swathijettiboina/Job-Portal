@@ -1,22 +1,20 @@
 import pkg from 'pg';
-const { Pool } = pkg;
 import dotenv from 'dotenv';
 
 dotenv.config();
+const { Pool } = pkg;
 
 const pool = new Pool({
     connectionString: process.env.SUPABASE_DATABASE_URL,
+    ssl: { rejectUnauthorized: false }, // Enable if needed
 });
 
-async function checkDB() {
-    try {
-        const client = await pool.connect();
+// Check database connection only once at startup
+pool.connect()
+    .then(client => {
         console.log('✅ PostgreSQL connected successfully');
         client.release();
-    } catch (error) {
-        console.error('❌ Database connection error:', error.message);
-    }
-}
+    })
+    .catch(error => console.error('❌ Database connection error:', error.message));
 
-checkDB();
 export default pool;
