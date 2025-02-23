@@ -1,11 +1,12 @@
 import React from "react";
 import Navbar from "./Navbar";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   return (
     <>
       <Navbar />
-      
+
       {/* Main Container */}
       <div className="flex flex-col md:flex-row items-center justify-center h-screen bg-gray-100 px-6">
         
@@ -26,9 +27,11 @@ const Home = () => {
           <p className="text-gray-600 mt-4 text-lg">
             Explore thousands of job opportunities and kickstart your career today.
           </p>
-          <button className="mt-6 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700">
-            Get Started
-          </button>
+          <Link to="/jobs">
+            <button className="mt-6 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700">
+              Get Started
+            </button>
+          </Link>
         </div>
 
       </div>
