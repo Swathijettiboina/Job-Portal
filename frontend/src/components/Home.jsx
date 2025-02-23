@@ -14,7 +14,7 @@ const Home = () => {
           <img 
             src="https://assets-v2.lottiefiles.com/a/d07c305c-117f-11ee-b58d-d7baacc402de/OXV1AtPqup.gif" 
             alt="Find Your Dream Job" 
-            className="w-3/4 md:w-2/3 rounded-lg shadow-lg"
+            className="w-3/4 md:w-2/3 rounded-lg shadow-lg mt-10"
           />
         </div>
 
@@ -26,7 +26,7 @@ const Home = () => {
           <p className="text-gray-600 mt-4 text-lg">
             Explore thousands of job opportunities and kickstart your career today.
           </p>
-          <button className="mt-6 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700">
+          <button className="mt-6 text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-xl px-5 py-2.5 text-center me-2 mb-2">
             Get Started
           </button>
         </div>
