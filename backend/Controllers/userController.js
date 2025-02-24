@@ -91,4 +91,90 @@ const storeRecruiter = async (req, res) => {
   return res.status(201).json({ message: 'Recruiter created successfully', data });
 };
 
-module.exports = { storeJobSeeker, storeRecruiter };
+const getJobSeekerProfile = async (req, res) => {
+  const { email } = req.params;
+
+  try {
+    const { data, error } = await supabase
+      .from("job_seekers")
+      .select("*")
+      .eq("email", email)
+      .single();
+
+    if (error) {
+      return res.status(400).json({ message: "Profile not found!" });
+    }
+
+    res.status(200).json(data);
+  } catch (err) {
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
+};
+
+const updateJobSeekerProfile = async (req, res) => {
+  const { email } = req.params;
+  const {
+    dob,
+    education,
+    skills,
+    experienceYears,
+    languages,
+    resume,
+    declaration,
+  } = req.body;
+
+  try {
+    // Check if profile exists
+    const { data: existingProfile } = await supabase
+      .from("job_seeker_profiles")
+      .select("email")
+      .eq("email", email)
+      .single();
+
+    if (existingProfile) {
+      // Update profile if it exists
+      const { data, error } = await supabase
+        .from("job_seeker_profiles")
+        .update({
+          dob,
+          education,
+          skills,
+          experience_years: experienceYears,
+          languages,
+          resume,
+          declaration,
+        })
+        .eq("email", email)
+        .select();
+
+      if (error) return res.status(400).json({ error: "Profile update failed" });
+
+      return res.status(200).json({ message: "Profile updated successfully", data });
+    } else {
+      // Create new profile
+      const { data, error } = await supabase
+        .from("job_seeker_profiles")
+        .insert([{
+          email,
+          dob,
+          education,
+          skills,
+          experience_years: experienceYears,
+          languages,
+          resume,
+          declaration,
+        }])
+        .select();
+
+      if (error) return res.status(400).json({ error: "Profile creation failed" });
+
+      return res.status(201).json({ message: "Profile created successfully", data });
+    }
+  } catch (err) {
+    res.status(500).json({ error: "Server error" });
+  }
+};
+
+
+
+module.exports = { storeJobSeeker, storeRecruiter,getJobSeekerProfile,updateJobSeekerProfile};

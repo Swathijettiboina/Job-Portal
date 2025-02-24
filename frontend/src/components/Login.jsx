@@ -50,7 +50,7 @@ const Login = () => {
         
 
         // Store the JWT token in localStorage for later use
-        localStorage.setItem('token', response.data.token); // Store JWT token
+    // Store JWT token
         localStorage.setItem('user', JSON.stringify(response.data.user)); // Store user info
 
         // Redirect the user to their dashboard or profile page

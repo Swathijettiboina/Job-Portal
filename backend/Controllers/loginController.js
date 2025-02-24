@@ -64,10 +64,11 @@ const loginUser = async (req, res) => {
     // Set JWT token in cookies
     res.cookie('token', token, {
       httpOnly: true,  // can't be accessed by JavaScript
-      secure: process.env.NODE_ENV === 'production', // set to true if using https
+      secure: false, // set to true if using https
       maxAge: 3600000, // 1 hour
       sameSite: 'strict', // Prevent CSRF attacks
     });
+    
 
     // Successful login
     return res.status(200).json({
