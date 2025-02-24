@@ -17,7 +17,7 @@ function Jobs() {
 
       <main className="w-3/4 p-4">
         <JobListing filters={filters} />
-      </main>
+      </main> 
     </div>
   );
 }
