@@ -81,11 +81,13 @@ import axios from 'axios';
 
 const MainNavbar = () => {
   const navigate=useNavigate()
-const logout=async()=>{
-  const data=await axios.get('http://localhost:5000/logout');
-  console.log(data);
-  navigate('/')
-}
+  const logout =  () => {
+    
+      navigate("/login"); // Redirect to login page
+    
+  };
+  
+
 
 
 
