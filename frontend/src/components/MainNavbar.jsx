@@ -37,6 +37,11 @@ const MainNavbar = () => {
             <Link to="/hrprofile" className="flex items-center space-x-1 text-gray-700 hover:text-blue-600">
               <FaUser /> <span>Profile</span>
             </Link>
+
+            <Link to="/premium" className="flex items-center space-x-1 text-black-700 hover:text-gray-800">
+               <span>👑Premium</span>
+            </Link>
+            
             <Link to="/" className="flex items-center space-x-1 text-red-600 hover:text-red-800">
               <FaSignOutAlt /> <span>Logout</span>
             </Link>

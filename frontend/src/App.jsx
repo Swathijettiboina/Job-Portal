@@ -7,7 +7,7 @@ import Signup from './components/Signup';
 import Login from './components/Login';
 import MainPage from './components/MainPage';
 import HrProfile from './components/HrProfile';
-
+import PremiumPage from './pages/PremiumPage';
 function App() {
   return (
     <>
@@ -20,6 +20,7 @@ function App() {
           <Route path='/signup' element={<Signup />} />
           <Route path='/login' element={<Login />} />
           <Route path='/main' element={<MainPage />} />
+          <Route path='/premium' element={<PremiumPage />} />
           <Route path='/hrprofile' element={<HrProfile />} />
 
         </Routes>
