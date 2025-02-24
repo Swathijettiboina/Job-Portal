@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import axios from 'axios';  
-import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [userType, setUserType] = useState('');
@@ -10,7 +9,7 @@ const Login = () => {
   });
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate(); // useNavigate for redirection
+  // const [loginSuccess, setLoginSuccess] = useState(false); // Track login status
 
   const handleSelectUserType = (type) => {
     setUserType(type);
@@ -47,7 +46,7 @@ const Login = () => {
         console.log('Login successful:', response.data);
         alert('Login successful!');
         localStorage.setItem('user', JSON.stringify(response.data.user));
-        navigate('/main'); // Redirect after successful login
+        window.location.href = '/main'; // Redirect automatically after alert
       }
     } catch (err) {
       console.error('Login error:', err.response);
@@ -56,7 +55,7 @@ const Login = () => {
       setLoading(false);
     }
   };
-  
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="flex max-w-4xl w-full bg-white shadow-lg rounded-lg p-6">
@@ -132,7 +131,6 @@ const Login = () => {
               >
                 {loading ? 'Logging in...' : 'Login'}
               </button>
-              
             </div>
           </form>
         </div>
