@@ -35,7 +35,7 @@ const SignUpPage = () => {
     }
 
     try {
-        const apiUrl = userType === 'recruiter' ? 'http://localhost:5000/api/users/recruiter' : 'http://localhost:5000/api/users/jobseeker';
+        const apiUrl = userType === 'recruiter' ? 'http://localhost:5000/recruiter' : 'http://localhost:5000/jobseeker';
 
       const response = await axios.post(apiUrl, formData);
       console.log('Response:', response.data);
