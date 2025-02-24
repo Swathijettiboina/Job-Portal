@@ -33,7 +33,7 @@ const JobCard = ({ job }) => {
           </span>
         ) : (
           <span className="bg-blue-100 text-blue-800 text-sm font-semibold px-3 py-1 rounded-lg">
-            📍 Offline {job.job_location}
+            📍 On-site {job.job_location}
           </span>
         )}
       </div>
