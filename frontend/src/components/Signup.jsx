@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const SignUpPage = () => {
   const [userType, setUserType] = useState('');
@@ -14,6 +15,7 @@ const SignUpPage = () => {
   });
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate(); // Use navigate for redirection
 
   const handleSelectUserType = (type) => {
     setUserType(type);
@@ -53,7 +55,7 @@ const SignUpPage = () => {
       const response = await axios.post(apiUrl, { ...formData, userType });
       console.log('Response:', response.data);
       alert('User created successfully!');
-      window.location.href = '/main';
+      navigate('/main'); // Redirect after successful signup
     } catch (error) {
       console.error('Error:', error);
       setError(error.response?.data?.message || 'There was an error signing up. Please try again.');

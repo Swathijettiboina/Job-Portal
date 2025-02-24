@@ -4,6 +4,9 @@ const express=require('express');
 const { getFilteredJobs } = require('../Controllers/getFilteredJobs');
 const { storeJobSeeker, storeRecruiter } = require('../Controllers/userController');
 const { loginUser } = require('../Controllers/loginController');
+
+
+
 const router=express.Router();
 
 router.get('/jobs',getJobs);
@@ -16,6 +19,8 @@ router.post('/jobseeker', storeJobSeeker);
 router.post('/recruiter', storeRecruiter);
 
 
+
 router.post('/login', loginUser);
+
 
 module.exports=router;

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';  
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [userType, setUserType] = useState('');
@@ -9,7 +10,7 @@ const Login = () => {
   });
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-  // const [loginSuccess, setLoginSuccess] = useState(false); // Track login status
+  const navigate = useNavigate(); // useNavigate for redirection
 
   const handleSelectUserType = (type) => {
     setUserType(type);
@@ -27,26 +28,32 @@ const Login = () => {
     e.preventDefault();
     setLoading(true);
     setError(null);
-  
     if (!userType) {
       setError('Please select a user type before logging in.');
       setLoading(false);
       return;
     }
-  
+
     try {
       console.log('Submitting login request:', { ...formData, userType });
-  
+
+      // Make the POST request to your backend
       const response = await axios.post('http://localhost:5000/login', {
         ...formData,
-        userType, 
-      });
-  
+        userType,
+      },{withCredentials: true});
+
       if (response.status === 200) {
         console.log('Login successful:', response.data);
         alert('Login successful!');
-        localStorage.setItem('user', JSON.stringify(response.data.user));
-        window.location.href = '/main'; // Redirect automatically after alert
+        
+
+        // Store the JWT token in localStorage for later use
+        localStorage.setItem('token', response.data.token); // Store JWT token
+        localStorage.setItem('user', JSON.stringify(response.data.user)); // Store user info
+
+        // Redirect the user to their dashboard or profile page
+        navigate('/main'); // Redirect to main page after successful login
       }
     } catch (err) {
       console.error('Login error:', err.response);
@@ -59,9 +66,11 @@ const Login = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="flex max-w-4xl w-full bg-white shadow-lg rounded-lg p-6">
-        
+        {/* Left Panel: Select User Type */}
         <div className="flex flex-col items-center justify-center w-1/3 bg-gray-50 p-6 rounded-lg">
           <h2 className="text-2xl font-semibold mb-4">Select User Type</h2>
+
+          {/* Job Seeker Option */}
           <div
             onClick={() => handleSelectUserType('jobSeeker')}
             className={`cursor-pointer w-32 h-32 bg-gray-100 rounded-lg relative transition-all duration-300 mb-6 ${userType === 'jobSeeker' ? 'border-4 border-blue-500' : ''}`}
@@ -76,6 +85,7 @@ const Login = () => {
             </div>
           </div>
 
+          {/* Recruiter Option */}
           <div
             onClick={() => handleSelectUserType('recruiter')}
             className={`cursor-pointer w-32 h-32 bg-gray-100 rounded-lg relative transition-all duration-300 ${userType === 'recruiter' ? 'border-4 border-green-500' : ''}`}
@@ -91,11 +101,14 @@ const Login = () => {
           </div>
         </div>
 
+        {/* Right Panel: Login Form */}
         <div className="w-2/3 p-6">
           <h1 className="text-3xl font-semibold text-center mb-6">Login</h1>
-          
+
+          {/* Error Message */}
           {error && <div className="text-red-500 mb-4">{error}</div>}
 
+          {/* Login Form */}
           <form onSubmit={handleSubmit}>
             <div className="space-y-4">
               <div className="space-y-2">
