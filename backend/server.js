@@ -1,27 +1,28 @@
-import express from 'express';
-import pool from './Models/dbConnection.js';
+require("dotenv").config();
+const express = require("express");
+const cors = require("cors");
+const router = require("./Router/router");
+const supabase = require("./config/supabaseClient"); // Import Supabase client
 
 const app = express();
+app.use(cors());
+app.use(express.json());
+app.use("/", router);
+
 const PORT = process.env.PORT || 5000;
 
-app.use(express.json());
+app.listen(PORT, async () => {
+  console.log(`✅ Server running on port ${PORT}`);
 
-app.get('/', (req, res) => {
-    res.send('🚀 Job Portal API is running...');
-});
-
-// Test database connection on demand
-app.get('/test-db', async (req, res) => {
-    try {
-        const client = await pool.connect();
-        client.release();
-        res.status(200).json({ message: '✅ Database connected successfully.' });
-    } catch (error) {
-        console.error('❌ Database connection error:', error.message);
-        res.status(500).json({ message: '❌ Database connection failed.' });
+  // Check Supabase connection on startup
+  try {
+    const { error } = await supabase.from("jobs").select("job_id").limit(1);
+    if (error) {
+      console.error("❌ Supabase connection failed:", error.message);
+    } else {
+      console.log("✅ Supabase connection successful!");
     }
-});
-
-app.listen(PORT, () => {
-    console.log(`🚀 Server is running on port ${PORT}`);
+  } catch (err) {
+    console.error("❌ Unexpected error during Supabase connection check:", err);
+  }
 });
