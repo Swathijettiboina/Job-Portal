@@ -1,27 +1,27 @@
-import express from 'express';
-import pool from './Models/dbConnection.js';
+require("dotenv").config();
+ 
+const express = require("express");
+const cors = require("cors");
+const bodyParser = require('body-parser');
+const { createClient } = require("@supabase/supabase-js");
+const userRoutes = require('./Routes/userRoutes'); 
+// Debugging: Check if env variables are loading
+console.log("SUPABASE_URL:", process.env.SUPABASE_URL);
+console.log("SUPABASE_KEY:", process.env.SUPABASE_KEY);
+ 
+if (!process.env.SUPABASE_URL || !process.env.SUPABASE_KEY) {
+  throw new Error("❌ Supabase credentials are missing. Check your .env file.");
+}
+ 
+const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
 
 const app = express();
+app.use(bodyParser.json());
+
+app.use(cors());
+app.use('/api/users', userRoutes);
+
+app.get("/", (req, res) => res.send("Job Portal Backend Running"));
+ 
 const PORT = process.env.PORT || 5000;
-
-app.use(express.json());
-
-app.get('/', (req, res) => {
-    res.send('🚀 Job Portal API is running...');
-});
-
-// Test database connection on demand
-app.get('/test-db', async (req, res) => {
-    try {
-        const client = await pool.connect();
-        client.release();
-        res.status(200).json({ message: '✅ Database connected successfully.' });
-    } catch (error) {
-        console.error('❌ Database connection error:', error.message);
-        res.status(500).json({ message: '❌ Database connection failed.' });
-    }
-});
-
-app.listen(PORT, () => {
-    console.log(`🚀 Server is running on port ${PORT}`);
-});
+app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
