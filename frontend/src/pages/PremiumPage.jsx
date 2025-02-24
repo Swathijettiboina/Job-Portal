@@ -1,45 +1,60 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, Routes, Route } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import PremiumContent from "./PremiumContent";
-import NewPremiumUser from "./NewPremiumUser";
 
 const PremiumPage = () => {
-  const [userExists, setUserExists] = useState(null);
-
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-   
+    let isMounted = true; // Prevent updates on unmounted component
 
-    if (!userId) {
-      navigate("/no-access"); // Redirect if no ID is found
-      return;
-    }
+    const checkPremiumStatus = async () => {
+      try {
+        const storedUser = JSON.parse(localStorage.getItem("user")); 
+        if (!storedUser || !storedUser.id) {
+          return navigate("/getpremium"); 
+        }
 
-    // Check if the user exists in PostgreSQL
-    axios
-      .get(`http://localhost:5000/check-user'`)
-      .then((response) => {
-        setUserExists(response.data.exists);
-      })
-      .catch((error) => {
-        console.error("Error checking user:", error);
-        setUserExists(false);
-      });
-  }, []);
+        // API call to check premium status
+        const response = await axios.get(`http://localhost:5000/check-premium/${storedUser.id}`, {
+          withCredentials: true,
+        });
+        console.log(response)
+        if (isMounted) {
+          if (response.data.isPremium) {
+            navigate("/haspremium"); // ✅ Redirect only if premium
+          } else {
+            navigate("/getpremium"); // ❌ Redirect if not premium
+          }
+        }
+      } catch (err) {
+        console.error("Error checking premium status:", err);
+        if (isMounted) {
+          setError("Failed to check premium status");
+          navigate("/getpremium");
+        }
+      } finally {
+        if (isMounted) setLoading(false);
+      }
+    };
 
-  if (userExists === null) {
-    return <div>Loading...</div>; // Show loading state while checking
-  }
+    checkPremiumStatus();
+
+    return () => {
+      isMounted = false; // Cleanup to prevent memory leaks
+    };
+  }, [navigate]);
+
+  if (loading) return <p>Checking premium status...</p>;
+  if (error) return <p>{error}</p>;
 
   return (
-    <Routes>
-      {userExists ? (
-        <Route path="*" element={<PremiumContent />} />
-      ) : (
-        <Route path="*" element={<NewPremiumUser />} />
-      )}
-    </Routes>
+    <div>
+      <h1>Welcome to Premium Page</h1>
+      <p>Only premium users can see this content.</p>
+    </div>
   );
 };
 

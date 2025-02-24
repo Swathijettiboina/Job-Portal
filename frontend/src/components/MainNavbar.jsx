@@ -127,7 +127,9 @@ const MainNavbar = () => {
             <Link to="/profile" className="flex items-center space-x-1 text-gray-700 hover:text-blue-600">
               <FaUser /> <span>Profile</span>
             </Link>
-           
+            <Link to="/premium" className="flex items-center space-x-1 text-gray-700 hover:text-blue-600">
+              <span>👑premium</span>
+            </Link>
               <FaSignOutAlt /> <button  onClick={logout}><span>Logout</span></button>
            
           </div>

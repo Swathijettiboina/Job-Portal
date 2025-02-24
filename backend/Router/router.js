@@ -5,7 +5,7 @@ const { getFilteredJobs } = require('../Controllers/getFilteredJobs');
 const { storeJobSeeker, storeRecruiter } = require('../Controllers/userController');
 const { loginUser } = require('../Controllers/loginController');
 
-
+const { checkPremium, createCheckoutSession ,cd} = require("../Controllers/Premiumdata");
 
 const router=express.Router();
 
@@ -22,5 +22,10 @@ router.post('/recruiter', storeRecruiter);
 
 router.post('/login', loginUser);
 
+
+
+router.get('/check-premium/:number',checkPremium);
+router.post("/create-checkout-session", createCheckoutSession);
+router.get("/:number", cd)
 
 module.exports=router;
