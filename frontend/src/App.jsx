@@ -7,6 +7,7 @@ import Signup from './components/Signup';
 import Login from './components/Login';
 import MainPage from './components/MainPage';
 import HrProfile from './components/HrProfile';
+import AddJobForm from './components/AddJobForm';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path='/login' element={<Login />} />
           <Route path='/main' element={<MainPage />} />
           <Route path='/hrprofile' element={<HrProfile />} />
+          <Route path='/addJob' element={<AddJobForm />} />
 
         </Routes>
       </BrowserRouter>
