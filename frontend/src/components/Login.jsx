@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';  // Import Axios
+import { Link } from 'react-router-dom';
 
 const Login = () => {
   const [userType, setUserType] = useState('');
@@ -40,7 +41,6 @@ const Login = () => {
       console.log('Login successful:', response.data);
       // You can redirect the user or store the token in localStorage/sessionStorage
       localStorage.setItem('user', JSON.stringify(response.data.user));  // Example of storing user info
-      window.location.href = '/dashboard';  // Redirect to dashboard (or another page)
     } catch (err) {
       console.error('Login error:', err.response);
       setError(err.response ? err.response.data.message : 'An error occurred');
@@ -120,6 +120,7 @@ const Login = () => {
               </div>
 
               {/* Submit Button */}
+              <Link to="/main">
               <button
                 type="submit"
                 className="w-full py-3 mt-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -127,6 +128,8 @@ const Login = () => {
               >
                 {loading ? 'Logging in...' : 'Login'}
               </button>
+              </Link>
+              
             </div>
           </form>
         </div>

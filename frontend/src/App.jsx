@@ -5,6 +5,7 @@ import About from './pages/About';
 import JobDetailsView from './components/JobDetailsView';
 import Signup from './components/Signup';
 import Login from './components/Login';
+import MainPage from './components/MainPage';
 
 function App() {
   return (
@@ -17,6 +18,8 @@ function App() {
           <Route path='/jobs/:job_id' element={<JobDetailsView />} />
           <Route path='/signup' element={<Signup />} />
           <Route path='/login' element={<Login />} />
+          <Route path='/main' element={<MainPage />} />
+
         </Routes>
       </BrowserRouter>
     </>
