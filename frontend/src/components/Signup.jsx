@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import axios from 'axios'; // Import axios
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const SignUpPage = () => {
   const [userType, setUserType] = useState('');
@@ -10,9 +11,11 @@ const SignUpPage = () => {
     password: '',
     confirmPassword: '',
     companyName: '',
-    location: ''
-    
+    location: '',
   });
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate(); // Use navigate for redirection
 
   const handleSelectUserType = (type) => {
     setUserType(type);
@@ -28,31 +31,43 @@ const SignUpPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+    setLoading(true);
+    setError(null);
+
+    if (!userType) {
+      setError('Please select a user type before signing up.');
+      setLoading(false);
+      return;
+    }
+
     if (formData.password !== formData.confirmPassword) {
-      alert("Passwords don't match!");
+      setError("Passwords don't match!");
+      setLoading(false);
       return;
     }
 
     try {
-        const apiUrl = userType === 'recruiter' ? 'http://localhost:5000/recruiter' : 'http://localhost:5000/jobseeker';
+      const apiUrl =
+        userType === 'recruiter'
+          ? 'http://localhost:5000/recruiter'
+          : 'http://localhost:5000/jobseeker';
 
-      const response = await axios.post(apiUrl, formData);
+      const response = await axios.post(apiUrl, { ...formData, userType });
       console.log('Response:', response.data);
       alert('User created successfully!');
+      navigate('/main'); // Redirect after successful signup
     } catch (error) {
       console.error('Error:', error);
-      if (error.response && error.response.data) {
-        alert(error.response.data.message); // Show specific error message from backend
-      } else {
-        alert('There was an error signing up. Please try again.');
-      }
+      setError(error.response?.data?.message || 'There was an error signing up. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="flex max-w-4xl w-full bg-white shadow-lg rounded-lg p-6">
+        
         {/* Left Side - User Type Selection */}
         <div className="flex flex-col items-center justify-center w-1/3 bg-gray-50 p-6 rounded-lg">
           <h2 className="text-2xl font-semibold mb-4">Select User Type</h2>
@@ -68,7 +83,7 @@ const SignUpPage = () => {
               className="object-cover w-full h-full rounded-lg"
             />
             <div
-              className={`absolute inset-0 flex justify-center items-center bg-white bg-opacity-10 text-black text-xl font-semibold transition-all duration-300 ${
+              className={`absolute inset-0 flex justify-center items-center bg-black bg-opacity-50 text-white text-xl font-semibold transition-all duration-300 ${
                 userType === 'jobSeeker' ? 'opacity-100' : 'opacity-0'
               }`}
             >
@@ -79,7 +94,7 @@ const SignUpPage = () => {
           <div
             onClick={() => handleSelectUserType('recruiter')}
             className={`cursor-pointer w-32 h-32 bg-gray-100 rounded-lg relative transition-all duration-300 ${
-              userType === 'recruiter' ? 'border-4 border-blue-500' : ''
+              userType === 'recruiter' ? 'border-4 border-green-500' : ''
             }`}
           >
             <img
@@ -88,7 +103,7 @@ const SignUpPage = () => {
               className="object-cover w-full h-full rounded-lg"
             />
             <div
-              className={`absolute inset-0 flex justify-center items-center bg-white bg-opacity-50 text-black text-xl font-semibold transition-all duration-300 ${
+              className={`absolute inset-0 flex justify-center items-center bg-black bg-opacity-50 text-white text-xl font-semibold transition-all duration-300 ${
                 userType === 'recruiter' ? 'opacity-100' : 'opacity-0'
               }`}
             >
@@ -100,6 +115,8 @@ const SignUpPage = () => {
         {/* Right Side - Form Fields */}
         <div className="w-2/3 p-6">
           <h1 className="text-3xl font-semibold text-center mb-6">Sign Up</h1>
+          {error && <div className="text-red-500 mb-4">{error}</div>}
+
           <form onSubmit={handleSubmit}>
             <div className="space-y-4">
               <div className="space-y-2">
@@ -180,27 +197,15 @@ const SignUpPage = () => {
                       placeholder="Enter your company name"
                     />
                   </div>
-
-                  <div className="space-y-2">
-                    <label className="block text-sm font-medium text-gray-700">Location</label>
-                    <input
-                      type="text"
-                      name="location"
-                      value={formData.location}
-                      onChange={handleInputChange}
-                      className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                      placeholder="Enter company location"
-                    />
-                  </div>
-                  <p className="text-sm text-gray-500">In the email field, use the company email address</p>
                 </>
               )}
 
               <button onClick={}
                 type="submit"
                 className="w-full py-3 mt-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                disabled={loading}
               >
-                Sign Up
+                {loading ? 'Signing up...' : 'Sign Up'}
               </button>
             </div>
           </form>

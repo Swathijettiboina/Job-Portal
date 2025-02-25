@@ -76,8 +76,22 @@
 
 import { Link } from "react-router-dom";
 import { FaHive, FaSearch, FaHome, FaBriefcase, FaUser, FaSignOutAlt } from "react-icons/fa"; // Importing icons
+import { useNavigate } from "react-router-dom";
+import axios from 'axios';
 
 const MainNavbar = () => {
+  const navigate=useNavigate()
+  const logout =  () => {
+    
+      navigate("/login"); // Redirect to login page
+    
+  };
+  
+
+
+
+
+
   return (
     <nav className="bg-white fixed w-full top-0 left-0 shadow-lg py-4 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -113,9 +127,11 @@ const MainNavbar = () => {
             <Link to="/profile" className="flex items-center space-x-1 text-gray-700 hover:text-blue-600">
               <FaUser /> <span>Profile</span>
             </Link>
-            <Link to="/" className="flex items-center space-x-1 text-red-600 hover:text-red-800">
-              <FaSignOutAlt /> <span>Logout</span>
+            <Link to="/premium" className="flex items-center space-x-1 text-gray-700 hover:text-blue-600">
+              <span>👑premium</span>
             </Link>
+              <FaSignOutAlt /> <button  onClick={logout}><span>Logout</span></button>
+           
           </div>
 
         </div>
