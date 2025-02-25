@@ -1,20 +1,20 @@
 const supabase = require("../config/supabaseClient");
 
 const getJobById = async (req, res) => {
-  const { job_id } = req.params; // Extract job_id
+  const { id } = req.params; // Extract job_id
 
-  console.log("🔍 Requested Job ID:", job_id); // Debugging log
+  // console.log("Requested Job ID:", id); // Debugging log
 
-  if (!job_id) {
+  if (!id) {
     return res.status(400).json({ message: "Job ID is required" });
   }
 
   try {
     // Ensure job_id is a valid UUID
     const { data, error } = await supabase
-      .from("jobs")
+      .from("jobs_data")
       .select("*")
-      .eq("job_id", job_id) // Match by job_id
+      .eq("id", id) // Match by job_id
       .single(); // Fetch only one job
 
     if (error || !data) {
