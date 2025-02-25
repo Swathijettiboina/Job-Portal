@@ -18,6 +18,7 @@ const PremiumPage = () => {
         }
 
         // API call to check premium status
+        console.log(storedUser.id)
         const response = await axios.get(`http://localhost:5000/check-premium/${storedUser.id}`, {
           withCredentials: true,
         });

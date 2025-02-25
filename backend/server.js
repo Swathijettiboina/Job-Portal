@@ -9,7 +9,8 @@ app.use(cors({
   origin: 'http://localhost:5173',  // Replace with your frontend's domain
   credentials: true,  // Allow sending cookies along with requests
 }));
-
+console.log("SUPABASE_URL:", process.env.SUPABASE_URL);
+console.log("SUPABASE_KEY:", process.env.SUPABASE_KEY);
 app.use(express.json());
 app.use("/", router);
 

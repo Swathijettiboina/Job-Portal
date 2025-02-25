@@ -19,11 +19,11 @@ const NewPremiumUser = () => {
       if (!storedUser || !storedUser.id) {
         throw new Error("User not found. Please log in again.");
       }
-
+      console.log(storedUser)
       const response = await fetch("http://localhost:5000/create-checkout-session", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ plan, number: storedUser.id }),
+        body: JSON.stringify({ plan, number: storedUser.id ,email:storedUser.email}),
       });
 
       const data = await response.json();

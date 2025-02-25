@@ -1,39 +1,36 @@
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const PremiumContent = () => {
-  const [status, setStatus] = useState({ isPremium: false, plan: "", message: "Checking premium status..." });
-  const [searchParams] = useSearchParams();
-  const number = searchParams.get("number"); // Get phone number from URL
+  const [status, setStatus] = useState({
+    isPremium: true,  // Assuming the user is premium after successful payment
+    message: "You are a premium provider and will receive all notifications faster than others!",
+  });
 
-  useEffect(() => {
-    const checkPremiumStatus = async () => {
-      if (!number) {
-        setStatus({ isPremium: false, message: "No phone number provided." });
-        return;
-      }
+  const navigate = useNavigate(); // Use the navigate hook to redirect
 
-      try {
-        const res = await fetch(`http://localhost:5000/haspremium/${number}`);
-        const data = await res.json();
-        setStatus(data);
-      } catch (error) {
-        console.error("Error fetching premium status:", error);
-        setStatus({ isPremium: false, message: "Failed to check premium status." });
-      }
-    };
-
-    checkPremiumStatus();
-  }, [number]);
+  // Button to navigate back to the home page
+  const goHome = () => {
+    navigate("/main"); // This is where you want to redirect after showing the premium message
+  };
 
   return (
-    <div>
-      <h1>Premium Status</h1>
-      {status.isPremium ? (
-        <p>✅ You have a {status.plan} premium subscription!</p>
-      ) : (
-        <p>❌ {status.message}</p>
-      )}
+    <div className="min-h-screen flex justify-center items-center bg-gray-900 p-8">
+      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg text-center">
+        <h1 className="text-2xl font-bold text-gray-800 mb-4">Premium Status</h1>
+        <p className="text-lg text-gray-600">{status.message}</p>
+        {status.isPremium && (
+          <div>
+            <p className="mt-4 text-green-500">✅ You are a premium provider!</p>
+            <button
+              onClick={goHome}
+              className="mt-6 px-4 py-2 bg-blue-500 text-white rounded-lg"
+            >
+              Go to Home
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
