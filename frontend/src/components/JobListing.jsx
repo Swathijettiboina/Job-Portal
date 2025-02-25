@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import JobCard from "./JobCard";
+import { Search } from "lucide-react";
+import SearchComponent from "./SearchComponent";
 
 const JobListing = () => {
   const [jobs, setJobs] = useState([]);
@@ -56,20 +58,12 @@ const JobListing = () => {
       <h1 className="text-4xl font-extrabold text-center mb-8 text-gray-800">
         Explore Top Job Listings
       </h1>
+      <SearchComponent />
 
       {/* Description */}
       <p className="text-center text-gray-600 mb-6">
         Browse through the latest job openings and find the perfect role that matches your skills.
       </p>
-
-      {/* Filter & Search Bar (Optional) */}
-      <div className="flex justify-center mb-6">
-        <input
-          type="text"
-          placeholder="Search jobs..."
-          className="w-full max-w-lg p-3 border rounded-lg focus:ring-2 focus:ring-blue-400 outline-none"
-        />
-      </div>
 
       {/* Job Listing Grid */}
       {jobs.length === 0 ? (
