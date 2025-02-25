@@ -10,7 +10,7 @@ const { postJob } = require("../Controllers/jobsController");
 const router=express.Router();
 
 router.get('/jobs',getJobs);
-router.get('/jobs/:job_id',getJobById);
+router.get('/jobs/:id',getJobById);
 router.get('/jobs/filter',getFilteredJobs);
 router.post("/post-job", postJob);
 router.get("/recruiter-profile", getRecruiterProfile);

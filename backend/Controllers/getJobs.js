@@ -2,7 +2,7 @@ const supabase = require("../config/supabaseClient");
 
 const getJobs = async (req, res) => {
   try {
-    const { data, error } = await supabase.from("job").select("*");
+    const { data, error } = await supabase.from("jobs_data").select("*");
 
     if (error) {
       console.error("Supabase Error:", error.message);
