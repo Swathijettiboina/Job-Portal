@@ -2,22 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Briefcase, MapPin, Building, Search } from "lucide-react";
 import { motion } from "framer-motion";
 
-const staticFilters = {
-  experience: ["Fresher", "0-1 year", "1-3 years", "3-5 years", "5+ years"],
-  jobType: ["Full-time", "Part-time", "Internship", "Contract", "Freelance"],
-  industry: [
-    "IT Services and IT Consulting",
-    "Finance",
-    "Healthcare",
-    "Marketing",
-    "Education",
-    "Software Development",
-    "Electric Power Generation",
-    "Real Estate",
-    "Pharmaceutical Manufacturing",
-  ],
-};
-
 const JobFilters = () => {
   const [jobs, setJobs] = useState([]);
   const [filteredJobs, setFilteredJobs] = useState([]);
@@ -58,16 +42,11 @@ const JobFilters = () => {
 
   useEffect(() => {
     let filtered = jobs.filter((job) => {
-      const jobLocation = job.job_location || "";
-      const jobType = job.job_type || "";
-      const experienceLevel = job.experience_level || "";
-      const companyIndustry = job.company_industry || "";
-
       return (
-        (!filters.location || jobLocation.includes(filters.location)) &&
-        (!filters.jobType || jobType === filters.jobType) &&
-        (!filters.experience || experienceLevel === filters.experience) &&
-        (!filters.industry || companyIndustry.includes(filters.industry)) &&
+        (!filters.location || job.job_location.includes(filters.location)) &&
+        (!filters.jobType || job.job_type === filters.jobType) &&
+        (!filters.experience || job.experience_level === filters.experience) &&
+        (!filters.industry || job.company_industry.includes(filters.industry)) &&
         (!filters.remote || job.is_remote === filters.remote)
       );
     });
@@ -75,15 +54,19 @@ const JobFilters = () => {
     setFilteredJobs(filtered);
   }, [filters, jobs]);
 
+  const uniqueValues = (key) => {
+    return [...new Set(jobs.map((job) => job[key]).filter(Boolean))];
+  };
+
   return (
     <div className="max-w-6xl mx-auto p-6">
       {/* Filters Section */}
-      <div className="bg-white p-6 shadow-lg rounded-lg border border-gray-200">
+      <div className="bg-white p-6 shadow-lg rounded-lg border border-gray-200 mb-6">
         <h2 className="text-2xl font-bold mb-4 flex items-center text-blue-700">
           <Search size={22} className="mr-2" />
           Filter Jobs
         </h2>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           <div>
             <label className="block font-semibold text-gray-700">Location:</label>
             <select
@@ -93,13 +76,9 @@ const JobFilters = () => {
               className="w-full p-2 border rounded-lg focus:outline-blue-500"
             >
               <option value="">All</option>
-              {[...new Set(jobs.map((job) => job.job_location).filter(Boolean))].map(
-                (location, index) => (
-                  <option key={index} value={location}>
-                    {location}
-                  </option>
-                )
-              )}
+              {uniqueValues("job_location").map((location, index) => (
+                <option key={index} value={location}>{location}</option>
+              ))}
             </select>
           </div>
 
@@ -112,10 +91,8 @@ const JobFilters = () => {
               className="w-full p-2 border rounded-lg focus:outline-blue-500"
             >
               <option value="">All</option>
-              {staticFilters.jobType.map((type) => (
-                <option key={type} value={type}>
-                  {type}
-                </option>
+              {uniqueValues("job_type").map((type) => (
+                <option key={type} value={type}>{type}</option>
               ))}
             </select>
           </div>
@@ -129,10 +106,8 @@ const JobFilters = () => {
               className="w-full p-2 border rounded-lg focus:outline-blue-500"
             >
               <option value="">All</option>
-              {staticFilters.experience.map((exp) => (
-                <option key={exp} value={exp}>
-                  {exp}
-                </option>
+              {uniqueValues("experience_level").map((exp) => (
+                <option key={exp} value={exp}>{exp}</option>
               ))}
             </select>
           </div>
@@ -146,10 +121,8 @@ const JobFilters = () => {
               className="w-full p-2 border rounded-lg focus:outline-blue-500"
             >
               <option value="">All</option>
-              {staticFilters.industry.map((ind) => (
-                <option key={ind} value={ind}>
-                  {ind}
-                </option>
+              {uniqueValues("company_industry").map((ind) => (
+                <option key={ind} value={ind}>{ind}</option>
               ))}
             </select>
           </div>
@@ -168,7 +141,7 @@ const JobFilters = () => {
       </div>
 
       {/* Job Listings */}
-      <motion.div layout className="space-y-4 mt-6">
+      <motion.div layout className="space-y-4">
         {filteredJobs.length === 0 ? (
           <p className="text-center text-gray-500">No jobs found.</p>
         ) : (

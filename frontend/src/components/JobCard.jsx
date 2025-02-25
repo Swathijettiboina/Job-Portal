@@ -1,5 +1,5 @@
 import React from "react";
-import { Briefcase, Globe, Linkedin, Info } from "lucide-react";
+import { Briefcase, Info } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const JobCard = ({ job }) => {
@@ -11,79 +11,30 @@ const JobCard = ({ job }) => {
         {job.job_title}
       </h2>
 
-      {/* Company Name with Link */}
-      <p className="text-lg text-gray-700 mt-1">
-        🏢{" "}
-        {/* <a
-          href={job.company_url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-blue-600 font-semibold hover:underline"
-        >
-          {job.company_name}
-        </a> */}
-        {job.company_name}
-      </p>
+      {/* Company Name */}
+      <p className="text-lg text-gray-700 mt-1">Company : {job.company}</p>
 
-      {/* Job Type (Remote / Location) */}
-      <div className="mt-3">
-        {job.is_remote ? (
-          <span className="bg-green-100 text-green-800 text-sm font-semibold px-3 py-1 rounded-lg">
-            🌍 Remote 
-          </span>
-        ) : (
-          <span className="bg-blue-100 text-blue-800 text-sm font-semibold px-3 py-1 rounded-lg">
-            📍 On-site {job.job_location}
-          </span>
-        )}
-      </div>
+      {/* Experience */}
+      <p className="text-gray-700 text-sm mt-2"> Experience: {job.experience}</p>
+
+      {/* Role */}
+      <p className="text-gray-700 text-sm mt-2"> Role: {job.role}</p>
+
+      {/* Salary Range */}
+      <p className="text-gray-700 text-sm mt-2"> Salary: {job.salary_range}</p>
 
       {/* Posted Date */}
-      <p className="text-gray-500 text-sm mt-3">📅 Posted on: {job.posted_date}</p>
-
-      {/* Company Links */}
-      <div className="mt-4 flex gap-4">
-        {job.company_url && (
-          <a
-            href={job.company_url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center text-blue-600 font-medium hover:underline"
-          >
-            <Globe size={18} className="mr-2" />Visit Website
-          </a>
-        )}
-
-        {job.company_linkedin_url && (
-          <a
-            href={job.company_linkedin_url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center text-blue-700 font-medium hover:underline"
-          >
-            <Linkedin size={18} className="mr-2" /> LinkedIn
-          </a>
-        )}
-      </div>
+      <p className="text-gray-500 text-sm mt-3">📅 Posted on: {new Date(job.created_at).toLocaleDateString()}</p>
 
       {/* Buttons Section */}
       <div className="mt-5 flex gap-3">
-      <Link
-  to={`/jobs/${job.job_id}`}
-  className="flex-1 text-center bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold py-2 px-4 rounded-lg transition duration-300 flex items-center justify-center gap-2"
->
-  <Info size={18} />
-  View Full Details
-</Link>
-
-        <a
-          href={job.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex-1 text-center bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-300"
+        <Link
+          to={`/jobs/${job.id}`}
+          className="flex-1 text-center bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold py-2 px-4 rounded-lg transition duration-300 flex items-center justify-center gap-2"
         >
-          Apply Now 🚀
-        </a>
+          <Info size={18} />
+          View Full Details
+        </Link>
       </div>
     </div>
   );
