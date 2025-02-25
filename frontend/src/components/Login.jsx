@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import axios from 'axios';  
-import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';  // Import useNavigate hook
 
 const Login = () => {
   const [userType, setUserType] = useState('');
@@ -10,7 +10,7 @@ const Login = () => {
   });
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate(); // useNavigate for redirection
+  const navigate = useNavigate();  // Hook for navigation
 
   const handleSelectUserType = (type) => {
     setUserType(type);
@@ -41,19 +41,17 @@ const Login = () => {
       const response = await axios.post('http://localhost:5000/login', {
         ...formData,
         userType,
-      },{withCredentials: true});
+      }, { withCredentials: true });
 
       if (response.status === 200) {
         console.log('Login successful:', response.data);
         alert('Login successful!');
+
+        // Store the user information in localStorage
+        localStorage.setItem('user', JSON.stringify(response.data.user));
         
-
-        // Store the JWT token in localStorage for later use
-        localStorage.setItem('token', response.data.token); // Store JWT token
-        localStorage.setItem('user', JSON.stringify(response.data.user)); // Store user info
-
-        // Redirect the user to their dashboard or profile page
-        navigate('/main'); // Redirect to main page after successful login
+        // Redirect using navigate instead of window.location.href
+        navigate('/main');  // React Router's navigate function for cleaner navigation
       }
     } catch (err) {
       console.error('Login error:', err.response);
